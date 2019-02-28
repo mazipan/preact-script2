@@ -324,9 +324,9 @@ var preact_min_default = /*#__PURE__*/__webpack_require__.n(preact_min);
   }
 });
 // CONCATENATED MODULE: ./preact-script2.js
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -340,7 +340,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var customAttrs = ['unload'];
 var staticProps = customAttrs.concat(['src', 'type', 'async', 'integrity', 'text', 'crossorigin']);
 
-var _ref2 = Object(preact_min["h"])('div', { style: 'display:none' });
+var _ref = Object(preact_min["h"])('div', { style: 'display:none', 'preact-script2': true });
 
 var preact_script2_PreactScript2 = function (_Component) {
 	_inherits(PreactScript2, _Component);
@@ -350,72 +350,102 @@ var preact_script2_PreactScript2 = function (_Component) {
 
 		var _this = _possibleConstructorReturn(this, _Component.call(this, props));
 
-		_this.load.bind(_this);
 		_this.state = {
 			installed: false,
 			loaded: {},
 			p: Promise.resolve()
 		};
+
+		_this.loadExternalScript.bind(_this);
+		_this.insertInlineScript.bind(_this);
 		return _this;
 	}
 
-	PreactScript2.prototype.componentDidMount = function componentDidMount() {
-		var __self = this;
-		var __el = __self.base;
-		var parent = __el.parentElement;
-
-		if (!__self.props.src) {
-			var s = document.createElement('script');
-			// get inline script
-			console.log(__self);
-			var _h = __self.props.inlineScript;
-			_h = _h.replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/&amp;/gi, '&');
+	PreactScript2.prototype.insertInlineScript = function insertInlineScript() {
+		var s = document.createElement('script');
+		// get inline script
+		var h = this.props.inlineScript;
+		if (h) {
+			h = h.replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/&amp;/gi, '&');
 			s.type = 'text/javascript';
-			s.appendChild(document.createTextNode(_h));
-			parent.appendChild(s);
-		} else {
-			var opts = utils.omitBy(utils.pick(this, staticProps), utils.isUndefined);
-			opts.parent = parent;
-			// this syntax results in an implicit return
-			var load = function load() {
-				return __self.load(__self.props.src, opts);
-			};
-			utils.isUndefined(__self.props.async) ? __self.state.p = __self.state.p.then(load) // serialize execution
-			: load();
+			s.appendChild(document.createTextNode(h));
+			this.base.parentElement.appendChild(s);
 		}
-
-		parent.removeChild(__el);
 	};
 
-	PreactScript2.prototype.componentWillUnmount = function componentWillUnmount() {};
-
-	PreactScript2.prototype.load = function load(src) {
+	PreactScript2.prototype.loadExternalScript = function loadExternalScript(src) {
 		var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : { parent: document.head };
 
 		var __self = this;
-		return __self.state.loaded[src] ? Promise.resolve(src) : new Promise(function (resolve, reject) {
+		var promiseLoadScript = new Promise(function (resolve, reject) {
 			var s = document.createElement('script');
+
 			utils.defaults2(s, utils.omit(opts, ['unload', 'parent']), { type: 'text/javascript' });
-			s.async = false; // therefore set this to false
+
+			s.async = false;
 			s.src = src;
+
 			if (opts.crossorigin) {
 				s.crossOrigin = opts.crossorigin;
 			}
 			s.onload = function () {
-				__self.state.loaded[src] = 1;
+				var _extends2;
+
+				var loaded = _extends({}, __self.loaded, (_extends2 = {}, _extends2[src] = 1, _extends2));
+				__self.setState({
+					loaded: loaded
+				});
 				resolve(src);
 			};
 			s.onerror = function () {
 				return reject(new Error(src));
 			};
-			opts.parent.appendChild(s);
+			if (!__self.state.loaded[src]) {
+				opts.parent.appendChild(s);
+			}
 		});
+
+		return __self.state.loaded[src] ? Promise.resolve(src) : promiseLoadScript;
 	};
 
-	PreactScript2.prototype.render = function render(_ref) {
-		var props = _objectWithoutProperties(_ref, []);
+	PreactScript2.prototype.componentDidMount = function componentDidMount() {
+		var _this2 = this;
 
-		return _ref2;
+		var __self = this;
+		var __el = __self.base;
+		var parent = __el.parentElement;
+
+		if (!this.props.src) {
+			this.insertInlineScript();
+		} else {
+			var opts = utils.omitBy(utils.pick(this, staticProps), utils.isUndefined);
+			opts.parent = parent;
+
+			var loadFn = function loadFn() {
+				return _this2.loadExternalScript(_this2.props.src, opts);
+			};
+			if (utils.isUndefined(this.props.async)) {
+				this.setState({
+					p: this.state.p.then(loadFn)
+				});
+			} else {
+				loadFn();
+			}
+		}
+
+		this.setState({
+			installed: true
+		});
+		// destroy itself
+		parent.removeChild(__el);
+	};
+
+	PreactScript2.prototype.componentWillUnmount = function componentWillUnmount() {};
+
+	PreactScript2.getDerivedStateFromProps = function getDerivedStateFromProps(props, state) {};
+
+	PreactScript2.prototype.render = function render() {
+		return _ref;
 	};
 
 	return PreactScript2;
@@ -423,7 +453,7 @@ var preact_script2_PreactScript2 = function (_Component) {
 
 
 // CONCATENATED MODULE: ./index.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return App; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return index_App; });
 
 
 function index__classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -435,36 +465,161 @@ function index__inherits(subClass, superClass) { if (typeof superClass !== "func
 
 
 
-var _ref = Object(preact_min["h"])(
-  'div',
-  null,
+var index__ref = Object(preact_min["h"])(
+  'section',
+  { 'class': 'hero is-medium is-dark' },
   Object(preact_min["h"])(
-    'h1',
-    null,
-    'Hello, World!'
-  ),
-  Object(preact_min["h"])(preact_script2_PreactScript2, {
-    src: '/test.js',
-    async: true,
-    type: 'some-type',
-    integrity: '1234567890',
-    text: 'QWERTYUIOP',
-    crossorigin: 'anonymous'
-  }),
-  Object(preact_min["h"])(preact_script2_PreactScript2, { inlineScript: '(function a() {console.warn(\'Hey, you just loading an inline script\')})()' })
+    'div',
+    { 'class': 'hero-body' },
+    Object(preact_min["h"])(
+      'div',
+      { 'class': 'container' },
+      Object(preact_min["h"])(
+        'h1',
+        { 'class': 'title' },
+        'Preact-Script2'
+      ),
+      Object(preact_min["h"])(
+        'h2',
+        { 'class': 'subtitle' },
+        'Preact component for insert <script> tag, inspired by vue-script2'
+      )
+    )
+  )
 );
 
-var App = function (_Component) {
+var _ref2 = Object(preact_min["h"])(
+  'h3',
+  { 'class': 'subtitle' },
+  'Type some IIFE script to be executed'
+);
+
+var _ref3 = Object(preact_min["h"])(
+  'label',
+  { 'class': 'label' },
+  'Your inline script:'
+);
+
+var _ref4 = Object(preact_min["h"])(
+  'h3',
+  { 'class': 'subtitle' },
+  'Custom load external script with custom props'
+);
+
+var _ref5 = Object(preact_min["h"])(
+  'label',
+  { 'class': 'label' },
+  'Your script src:'
+);
+
+var index_App = function (_Component) {
   index__inherits(App, _Component);
 
   function App() {
     index__classCallCheck(this, App);
 
-    return index__possibleConstructorReturn(this, _Component.apply(this, arguments));
+    var _this = index__possibleConstructorReturn(this, _Component.call(this));
+
+    _this.state = {
+      inlineScript: "(function a() {alert('Hey, you just loading an inline script')})()",
+      submittedInlineScript: '',
+      src: '/test.js',
+      submittedSrc: ''
+    };
+    _this.handleClickInline = _this.handleClickInline.bind(_this);
+    _this.handleChangeInline = _this.handleChangeInline.bind(_this);
+
+    _this.handleClickExternal = _this.handleClickExternal.bind(_this);
+    _this.handleChangeExternal = _this.handleChangeExternal.bind(_this);
+    return _this;
   }
 
+  App.prototype.handleClickInline = function handleClickInline() {
+    this.setState({
+      submittedInlineScript: this.state.inlineScript
+    });
+  };
+
+  App.prototype.handleChangeInline = function handleChangeInline(e) {
+    this.setState({ inlineScript: e.target.value });
+  };
+
+  App.prototype.handleClickExternal = function handleClickExternal() {
+    this.setState({
+      submittedSrc: this.state.src
+    });
+  };
+
+  App.prototype.handleChangeExternal = function handleChangeExternal(e) {
+    this.setState({ src: e.target.value });
+  };
+
   App.prototype.render = function render() {
-    return _ref;
+    return Object(preact_min["h"])(
+      'div',
+      null,
+      index__ref,
+      Object(preact_min["h"])(
+        'section',
+        { 'class': 'container', style: 'margin-top: 2em;' },
+        _ref2,
+        Object(preact_min["h"])(
+          'div',
+          { 'class': 'field' },
+          _ref3,
+          Object(preact_min["h"])(
+            'div',
+            { 'class': 'control' },
+            Object(preact_min["h"])('textarea', { 'class': 'textarea',
+              placeholder: 'Input some inline script',
+              onChange: this.handleChangeInline,
+              value: this.state.inlineScript })
+          )
+        ),
+        Object(preact_min["h"])(
+          'a',
+          { 'class': 'button is-primary',
+            onClick: this.handleClickInline },
+          'Insert inline script to DOM'
+        )
+      ),
+      Object(preact_min["h"])(
+        'section',
+        { 'class': 'container', style: 'margin-top: 2em;' },
+        _ref4,
+        Object(preact_min["h"])(
+          'div',
+          { 'class': 'field' },
+          _ref5,
+          Object(preact_min["h"])(
+            'div',
+            { 'class': 'control' },
+            Object(preact_min["h"])('input', {
+              'class': 'input',
+              type: 'text',
+              placeholder: 'Input some src url',
+              onChange: this.handleChangeExternal,
+              value: this.state.src })
+          )
+        ),
+        Object(preact_min["h"])(
+          'a',
+          { 'class': 'button is-primary',
+            onClick: this.handleClickExternal },
+          'Load external script'
+        )
+      ),
+      Object(preact_min["h"])(preact_script2_PreactScript2, {
+        src: this.state.src,
+        async: true,
+        type: 'some-type',
+        integrity: '1234567890',
+        text: 'QWERTYUIOP',
+        crossorigin: 'anonymous'
+      }),
+      Object(preact_min["h"])(preact_script2_PreactScript2, {
+        inlineScript: this.state.submittedInlineScript })
+    );
   };
 
   return App;
