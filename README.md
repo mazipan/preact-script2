@@ -1,6 +1,6 @@
 # preact-script2
 
-Library for insert &lt;script> tag for Preact, inspired by vue-script2
+Preact component for insert &lt;script> tag, inspired by vue-script2
 
 [![version](https://img.shields.io/npm/v/preact-script2.svg)](https://www.npmjs.com/package/preact-script2) ![minified](https://badgen.net/bundlephobia/minzip/preact-script2) [![downloads](https://img.shields.io/npm/dt/preact-script2.svg)](https://www.npmjs.com/package/preact-script2) [![Travis](https://img.shields.io/travis/mazipan/preact-script2.svg)](https://travis-ci.org/mazipan/preact-script2)
 

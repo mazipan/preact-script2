@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title><%= htmlWebpackPlugin.options.title %></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<link rel="manifest" href="<%= htmlWebpackPlugin.files.publicPath %>manifest.json">
+		<% if (htmlWebpackPlugin.options.manifest.theme_color) { %>
+			<meta name="theme-color" content="<%= htmlWebpackPlugin.options.manifest.theme_color %>">
+		<% } %>
+		<% for (var chunk of webpack.chunks) { %>
+		 <% if (chunk.names.length === 1 && chunk.names[0] === 'polyfills') continue; %>
+			<% for (var file of chunk.files) { %>
+				<% if (htmlWebpackPlugin.options.preload && file.match(/\.(js|css)$/)) { %>
+					<link rel="preload" href="<%= htmlWebpackPlugin.files.publicPath + file %>" as="<%= file.match(/\.css$/)?'style':'script' %>">
+				<% } else if (file.match(/manifest\.json$/)) { %>
+					<link rel="manifest" href="<%= htmlWebpackPlugin.files.publicPath + file %>">
+				<% } %>
+			<% } %>
+		<% } %>
+
+
+		<meta name="language" content="en-EN" />
+    <meta name="author" content="Irfan Maulana" />
+
+		<meta property="og:title" content="<%= htmlWebpackPlugin.options.title %>" />
+		<meta property="og:description" content="Preact component for insert &lt;script&gt; tag, inspired by vue-script2" />
+		<meta property="og:url" content="https://mazipan.github.io/preact-script2/" />
+		<meta property="og:image" content="https://www.mazipan.xyz/icon.png" />
+		<meta property="og:image:secure_url" content="https://www.mazipan.xyz/icon.png" />
+		<meta property="og:site_name" content="<%= htmlWebpackPlugin.options.title %>" />
+		<meta property="og:type" content="website" />
+		<meta property="og:image:width" content="96" />
+		<meta property="og:image:height" content="96" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content="@maz_ipan" />
+		<meta name="twitter:creator" content="@maz_ipan" />
+		<meta name="twitter:title" content="<%= htmlWebpackPlugin.options.title %>" />
+		<meta name="twitter:description" content="Preact component for insert &lt;script&gt; tag, inspired by vue-script2" />
+		<meta name="twitter:image:src" content="https://www.mazipan.xyz/icon.png" />
+		<meta name="twitter:image:width" content="96" />
+		<meta name="twitter:image:height" content="96" />
+    <meta name="twitter:domain" content="https://mazipan.github.io/preact-script2/" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-25065548-2"></script>
+		<script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-25065548-2');</script>
+
+	</head>
+	<body>
+		<%= htmlWebpackPlugin.options.ssr({
+			url: '/'
+		}) %>
+		<script defer src="<%= htmlWebpackPlugin.files.chunks['bundle'].entry %>"></script>
+		<script>window.fetch||document.write('<script src="<%= htmlWebpackPlugin.files.chunks["polyfills"].entry %>"><\/script>')</script>
+	</body>
+</html>

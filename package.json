@@ -13,8 +13,8 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "preact build",
-    "dev": "preact watch",
+    "build": "preact build --template template.html",
+    "dev": "preact watch --template template.html",
     "bundle": "microbundle src/preact-script2.js -o dist/ --sourcemap false --compress false --name script2"
   },
   "repository": {
