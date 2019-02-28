@@ -23,16 +23,9 @@ export default class App extends Component {
   render() {
     return (
       <div>
+        <Script2 src="/test.js" async type="some-type" integrity="1234567890" text="QWERTYUIOP" crossorigin="anonymous" />
         <Script2
-          src="/test.js"
-          async
-          type="some-type"
-					integrity="1234567890"
-					text="QWERTYUIOP"
-					crossorigin="anonymous"
-        />
-        <Script2
-          inlineScript="(function a() {console.warn('Hey, you just loading an inline script')})()"/>
+          inlineScript="(function a() {console.warn('Hey, you just loading an inline script')})()" />
       </div>
     );
   }
@@ -41,7 +34,15 @@ export default class App extends Component {
 
 ## Available Props
 
-TODO
+| Props Name           |              Type             |             Note             |
+| :------------------: | :---------------------------: | :--------------------------: |
+| `src`                | String                        | -                            |
+| `async`              | String                        | -                            |
+| `type`               | String                        | -                            |
+| `integrity`          | String                        | -                            |
+| `text`               | String                        | -                            |
+| `crossorigin`        | String                        | -                            |
+| `inlineScript`       | String                        | -                            |
 
 ## Development
 
