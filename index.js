@@ -1,6 +1,5 @@
-import './style';
 import { Component } from 'preact';
-import Script2 from './preact-script-component';
+import Script2 from './preact-script2';
 
 export default class App extends Component {
   render() {

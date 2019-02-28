@@ -2,11 +2,20 @@
   "name": "preact-script2",
   "version": "1.0.0",
   "description": "Library for insert <script> tag for Preact, inspired by vue-script2",
-  "main": "preact-script2.js",
+  "amdName": "script2",
+  "main": "dist/preact-script2.js",
+  "umd:main": "dist/preact-script2.umd.js",
+  "module": "dist/preact-script2.mjs",
+  "source": "preact-script2.js",
+  "files": [
+    "dist",
+    "preact-script2.js"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "preact build",
-    "dev": "preact watch"
+    "dev": "preact watch",
+    "bundle": "microbundle src/preact-script2.js -o dist/ --sourcemap false --compress false --name script2"
   },
   "repository": {
     "type": "git",
@@ -26,6 +35,7 @@
   "homepage": "https://github.com/mazipan/preact-script2#readme",
   "devDependencies": {
     "if-env": "^1.0.0",
+    "microbundle": "^0.10.1",
     "preact-cli": "^2.0.0"
   },
   "dependencies": {
