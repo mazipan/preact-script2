@@ -270,13 +270,6 @@ module.exports =
 
 /***/ }),
 
-/***/ "FWi5":
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ "JkW7":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -286,10 +279,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // EXTERNAL MODULE: ./node_modules/preact/dist/preact.min.js
 var preact_min = __webpack_require__("EBst");
 var preact_min_default = /*#__PURE__*/__webpack_require__.n(preact_min);
-
-// EXTERNAL MODULE: ./style.css
-var style = __webpack_require__("FWi5");
-var style_default = /*#__PURE__*/__webpack_require__.n(style);
 
 // CONCATENATED MODULE: ./utils.js
 
@@ -334,7 +323,7 @@ var style_default = /*#__PURE__*/__webpack_require__.n(style);
     });
   }
 });
-// CONCATENATED MODULE: ./preact-script-component.js
+// CONCATENATED MODULE: ./preact-script2.js
 
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -353,7 +342,7 @@ var staticProps = customAttrs.concat(['src', 'type', 'async', 'integrity', 'text
 
 var _ref2 = Object(preact_min["h"])('div', { style: 'display:none' });
 
-var preact_script_component_PreactScript2 = function (_Component) {
+var preact_script2_PreactScript2 = function (_Component) {
 	_inherits(PreactScript2, _Component);
 
 	function PreactScript2(props) {
@@ -446,7 +435,6 @@ function index__inherits(subClass, superClass) { if (typeof superClass !== "func
 
 
 
-
 var _ref = Object(preact_min["h"])(
   'div',
   null,
@@ -455,7 +443,7 @@ var _ref = Object(preact_min["h"])(
     null,
     'Hello, World!'
   ),
-  Object(preact_min["h"])(preact_script_component_PreactScript2, {
+  Object(preact_min["h"])(preact_script2_PreactScript2, {
     src: '/test.js',
     async: true,
     type: 'some-type',
@@ -463,7 +451,7 @@ var _ref = Object(preact_min["h"])(
     text: 'QWERTYUIOP',
     crossorigin: 'anonymous'
   }),
-  Object(preact_min["h"])(preact_script_component_PreactScript2, { inlineScript: '(function a() {console.warn(\'Hey, you just loading an inline script\')})()' })
+  Object(preact_min["h"])(preact_script2_PreactScript2, { inlineScript: '(function a() {console.warn(\'Hey, you just loading an inline script\')})()' })
 );
 
 var App = function (_Component) {
