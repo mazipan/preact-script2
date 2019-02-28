@@ -1,0 +1,35 @@
+{
+  "name": "preact-script2",
+  "version": "1.0.0",
+  "description": "Library for insert <script> tag for Preact, inspired by vue-script2",
+  "main": "preact-script2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "preact build",
+    "dev": "preact watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mazipan/preact-script2.git"
+  },
+  "keywords": [
+    "preact",
+    "script",
+    "load-script",
+    "preact-component"
+  ],
+  "author": "Irfan Maulana <github.com/mazipan>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mazipan/preact-script2/issues"
+  },
+  "homepage": "https://github.com/mazipan/preact-script2#readme",
+  "devDependencies": {
+    "if-env": "^1.0.0",
+    "preact-cli": "^2.0.0"
+  },
+  "dependencies": {
+    "preact": "^8.2.1",
+    "preact-compat": "^3.17.0"
+  }
+}

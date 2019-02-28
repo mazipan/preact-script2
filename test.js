@@ -1,0 +1,1 @@
+alert('some test external script');
